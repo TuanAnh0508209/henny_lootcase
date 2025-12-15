@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lootcase - Spin to Win</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Spinner Section */
+        .spinner-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .spinner {
+            width: 200px;
+            height: 200px;
+            border: 8px solid #f0f0f0;
+            border-top: 8px solid #667eea;
+            border-right: 8px solid #764ba2;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .spinner.active {
+            animation: spin 0.5s linear infinite;
+        }
+
+        .spinner.stopped {
+            animation: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner-status {
+            text-align: center;
+            font-size: 1.1em;
+            color: #666;
+            min-height: 30px;
+        }
+
+        /* Controls Section */
+        .controls-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-spin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-spin:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-spin:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-reset {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+        }
+
+        .btn-settings {
+            background: #95a5a6;
+            color: white;
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.4);
+        }
+
+        .btn-settings:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.6);
+        }
+
+        /* Result Display Section */
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-title {
+            color: #667eea;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .result-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+
+        .result-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+            min-height: 60px;
+        }
+
+        .result-empty {
+            color: #999;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #ddd;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            color: #667eea;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+
+            .spinner {
+                width: 150px;
+                height: 150px;
+                border-width: 6px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+
+            .controls-section {
+                gap: 10px;
+            }
+
+            .result-value {
+                font-size: 1.5em;
+            }
+
+            .stat-value {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎰 Lootcase</h1>
+
+        <!-- Spinner Section -->
+        <div class="spinner-section">
+            <div class="spinner" id="spinner"></div>
+            <div class="spinner-status" id="spinnerStatus">Ready to spin</div>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="controls-section">
+            <button class="btn-spin" id="spinBtn" onclick="spinLootcase()">Spin</button>
+            <button class="btn-reset" id="resetBtn" onclick="resetLootcase()">Reset</button>
+            <button class="btn-settings" id="settingsBtn" onclick="openSettings()">⚙️ Settings</button>
+        </div>
+
+        <!-- Result Display Section -->
+        <div class="result-section">
+            <div class="result-title">Last Result</div>
+            <div class="result-value" id="resultValue">—</div>
+            <div class="result-description" id="resultDescription">
+                <span class="result-empty">Spin the wheel to get started!</span>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-section">
+                <div class="stat-item">
+                    <div class="stat-label">Total Spins</div>
+                    <div class="stat-value" id="totalSpins">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-value" id="winRate">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let isSpinning = false;
+        let spins = [];
+
+        // Initialize from localStorage
+        function initializeApp() {
+            const saved = localStorage.getItem('lootcaseData');
+            if (saved) {
+                spins = JSON.parse(saved);
+                updateStats();
+            }
+        }
+
+        // Spin the lootcase
+        function spinLootcase() {
+            if (isSpinning) return;
+
+            isSpinning = true;
+            const spinner = document.getElementById('spinner');
+            const spinBtn = document.getElementById('spinBtn');
+
+            // Disable button and update spinner
+            spinBtn.disabled = true;
+            spinner.classList.remove('stopped');
+            spinner.classList.add('active');
+            document.getElementById('spinnerStatus').textContent = 'Spinning...';
+
+            // Simulate spin duration
+            const spinDuration = 2000 + Math.random() * 1000;
+
+            setTimeout(() => {
+                // Generate random result
+                const results = ['Gold', 'Silver', 'Bronze', 'Diamond', 'Platinum', 'Ruby'];
+                const selectedResult = results[Math.floor(Math.random() * results.length)];
+
+                // Record spin
+                const spinData = {
+                    result: selectedResult,
+                    timestamp: new Date().toISOString(),
+                    isWin: Math.random() > 0.5
+                };
+                spins.push(spinData);
+                localStorage.setItem('lootcaseData', JSON.stringify(spins));
+
+                // Update UI
+                displayResult(spinData);
+                updateStats();
+
+                // Stop spinner
+                spinner.classList.remove('active');
+                spinner.classList.add('stopped');
+                document.getElementById('spinnerStatus').textContent = 'Spin complete!';
+
+                // Re-enable button
+                spinBtn.disabled = false;
+                isSpinning = false;
+            }, spinDuration);
+        }
+
+        // Display result
+        function displayResult(spinData) {
+            const resultValue = document.getElementById('resultValue');
+            const resultDescription = document.getElementById('resultDescription');
+
+            resultValue.textContent = spinData.result;
+            resultDescription.innerHTML = `
+                <strong>Status:</strong> ${spinData.isWin ? '✓ Winner!' : '✗ Better luck next time'}
+                <br/>
+                <strong>Time:</strong> ${new Date(spinData.timestamp).toLocaleString()}
+            `;
+        }
+
+        // Update stats
+        function updateStats() {
+            const totalSpinsEl = document.getElementById('totalSpins');
+            const winRateEl = document.getElementById('winRate');
+
+            const totalSpins = spins.length;
+            const wins = spins.filter(s => s.isWin).length;
+            const winRate = totalSpins > 0 ? Math.round((wins / totalSpins) * 100) : 0;
+
+            totalSpinsEl.textContent = totalSpins;
+            winRateEl.textContent = winRate + '%';
+        }
+
+        // Reset lootcase
+        function resetLootcase() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                spins = [];
+                localStorage.removeItem('lootcaseData');
+                document.getElementById('resultValue').textContent = '—';
+                document.getElementById('resultDescription').innerHTML = '<span class="result-empty">Spin the wheel to get started!</span>';
+                updateStats();
+                document.getElementById('spinnerStatus').textContent = 'Ready to spin';
+            }
+        }
+
+        // Settings
+        function openSettings() {
+            alert('Settings panel coming soon!\nCurrent spins: ' + spins.length);
+        }
+
+        // Initialize app
+        initializeApp();
+    </script>
+</body>
+</html>
